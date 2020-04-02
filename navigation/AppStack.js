@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import AuthLoading from '../screens/auth/AuthLoading';
-import Temp from '../screens/auth/Temp';
+import Login from '../screens/auth/Login';
 
 const AuthStack = createStackNavigator();
 
@@ -16,7 +16,7 @@ const AppContainer = () => {
           component={AuthLoading}
           options={{title: 'Loading'}}
         />
-        <AuthStack.Screen name="Temp" component={Temp}></AuthStack.Screen>
+        <AuthStack.Screen name="Login" component={Login}></AuthStack.Screen>
       </AuthStack.Navigator>
     </NavigationContainer>
   );
