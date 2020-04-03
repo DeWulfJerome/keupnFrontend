@@ -9,6 +9,12 @@ const StyleConstants = {
       medium: '#651dff',
       dark: '#651dff',
     },
+    red: {
+      medium: '#cc0000',
+    },
+    green: {
+      medium: '#0b7000',
+    },
     white: {
       medium: '#fff',
     },

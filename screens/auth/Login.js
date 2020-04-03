@@ -7,16 +7,29 @@ import Button from '../../components/buttons/Button';
 import InputText from '../../components/inputs/InputText';
 
 const Login = () => {
+  const [loadingState, setLoadingState] = useState('');
+  const [username, setUsername] = useState('');
   return (
     <View style={styles.pageStyle}>
-      <ScrollView contentContainerStyle={styles.scrollViewStyle}>
-        <InputText label="username"></InputText>
-        <InputText label="password"></InputText>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewStyle}
+        keyboardShouldPersistTaps="handled">
+        <InputText
+          label="username"
+          loadingState={loadingState}
+          value={username}
+          onChangeText={text => {
+            setUsername(text);
+          }}></InputText>
         <Button
-          disabled={true}
-          text="Login"
+          disabled={!username}
+          text="Continue"
           onPress={() => {
-            console.log('logging');
+            if (loadingState) {
+              setLoadingState('');
+            } else {
+              setLoadingState('loading');
+            }
           }}></Button>
       </ScrollView>
     </View>
