@@ -17,6 +17,7 @@ const Login = () => {
         <InputText
           label="username"
           loadingState={loadingState}
+          theme="light"
           value={username}
           onChangeText={text => {
             setUsername(text);
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     paddingLeft: deviceWidth * 0.05,
     paddingRight: deviceWidth * 0.05,
   },

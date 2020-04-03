@@ -18,6 +18,9 @@ const StyleConstants = {
     white: {
       medium: '#fff',
     },
+    black: {
+      fontBlack: '#262626',
+    },
     grey: {
       dark: '#666666',
     },

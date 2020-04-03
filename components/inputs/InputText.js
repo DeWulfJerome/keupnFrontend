@@ -15,7 +15,7 @@ import StyleConstants, {deviceWidth} from '../../StyleConstants';
  *
  * @param {string} loadingState An enum: can be "loading", "error", "success", or "default"
  */
-const InputText = ({label, value, onChangeText, type, loadingState}) => {
+const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
   const inputType = type ? type : 'text';
   const [focussed, setFocussed] = useState(false);
   const labelAnim = useRef(new Animated.Value(0)).current;
@@ -159,7 +159,9 @@ const InputText = ({label, value, onChangeText, type, loadingState}) => {
   const labelColorAnim = colorAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [
-      StyleConstants.colors.white.medium,
+      theme === 'light'
+        ? StyleConstants.colors.black.fontBlack
+        : StyleConstants.colors.white.medium,
       StyleConstants.colors.blue.medium,
     ],
   });
@@ -169,6 +171,7 @@ const InputText = ({label, value, onChangeText, type, loadingState}) => {
       <Animated.Text
         style={[
           styles.labelStyle,
+          theme === 'light' && styles.lightLabelStyle,
           {
             opacity: labelOpacAnim,
             transform: [{translateX: transAnim}, {translateY: transAnim}],
@@ -195,7 +198,7 @@ const InputText = ({label, value, onChangeText, type, loadingState}) => {
         }
         selectionColor={StyleConstants.colors.blue.medium}
         secureTextEntry={inputType === 'password' ? true : false}
-        style={styles.input}
+        style={[styles.input, theme === 'light' && styles.lightInput]}
         onBlur={() => {
           setFocussed(false);
         }}
@@ -229,6 +232,9 @@ const styles = StyleSheet.create({
     fontSize: StyleConstants.font.sizes.medium,
     transform: [{translateY: 20}, {translateX: 20}],
   },
+  lightLabelStyle: {
+    color: StyleConstants.colors.black.fontBlack,
+  },
   input: {
     color: '#fff',
     position: 'absolute',
@@ -236,6 +242,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 999,
+  },
+  lightInput: {
+    color: StyleConstants.colors.black.fontBlack,
   },
   underLineContainer: {
     width: '100%',
