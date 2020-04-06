@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 
 import StyleConstants, {deviceWidth} from '../../StyleConstants';
@@ -6,32 +6,49 @@ import StyleConstants, {deviceWidth} from '../../StyleConstants';
 import Button from '../../components/buttons/Button';
 import InputText from '../../components/inputs/InputText';
 
-const Login = () => {
+//temp
+import Logo from '../../components/temp/Logo';
+
+const Login = (props) => {
   const [loadingState, setLoadingState] = useState('');
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('myUsername');
+  const [password, setPassword] = useState('testpassword');
+
+  const toNextPage = () => {
+    if (!loadingState) {
+      setLoadingState('loading');
+      setTimeout(() => {
+        setLoadingState('');
+        props.navigation.navigate('signup');
+      }, 3000);
+    }
+  };
+
   return (
     <View style={styles.pageStyle}>
+      <Logo></Logo>
       <ScrollView
         contentContainerStyle={styles.scrollViewStyle}
         keyboardShouldPersistTaps="handled">
         <InputText
           label="username"
           loadingState={loadingState}
-          theme="light"
           value={username}
-          onChangeText={text => {
+          onChangeText={(text) => {
             setUsername(text);
+          }}></InputText>
+        <InputText
+          label="password"
+          type="password"
+          loadingState={loadingState}
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
           }}></InputText>
         <Button
           disabled={!username}
           text="Continue"
-          onPress={() => {
-            if (loadingState) {
-              setLoadingState('');
-            } else {
-              setLoadingState('loading');
-            }
-          }}></Button>
+          onPress={toNextPage}></Button>
       </ScrollView>
     </View>
   );
@@ -44,7 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     paddingLeft: deviceWidth * 0.05,
     paddingRight: deviceWidth * 0.05,
   },

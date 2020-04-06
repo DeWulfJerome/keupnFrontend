@@ -4,20 +4,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import AuthLoading from '../screens/auth/AuthLoading';
 import Login from '../screens/auth/Login';
+//Stacks
+import LoginStackContainer from './auth/LoginStackContainer';
 
 const AuthStack = createStackNavigator();
 
 const AppContainer = () => {
   return (
     <NavigationContainer>
-      <AuthStack.Navigator initialRouteName="AuthLoading">
-        <AuthStack.Screen
-          name="AuthLoading"
-          component={AuthLoading}
-          options={{title: 'Loading'}}
-        />
-        <AuthStack.Screen name="Login" component={Login}></AuthStack.Screen>
-      </AuthStack.Navigator>
+      <LoginStackContainer></LoginStackContainer>
     </NavigationContainer>
   );
 };
