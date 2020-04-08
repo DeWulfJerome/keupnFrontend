@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {StyleSheet, View, ScrollView, Animated} from 'react-native';
+import {StyleSheet, View, ScrollView, Animated, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 // style
@@ -143,6 +143,14 @@ const Signup = props => {
             setWrapperWidth={setWrapperWidth}
             stageTransform={stageTransform}
             stageOpacity={stageOpacity}>
+            <View style={styles.textWrapper}>
+              <Text style={[styles.signupText, styles.SignupTextHeader]}>
+                Welcome to app
+              </Text>
+              <Text style={styles.signupText}>
+                Create an account to start using the app
+              </Text>
+            </View>
             <Input
               label="username"
               loadingState={loadingState}
@@ -151,10 +159,17 @@ const Signup = props => {
                 updateFormdata(text, 'username');
               }}
             />
+            <Button text={buttonText} onPress={nextFormStage} />
           </InputSlideWrapper>
           <InputSlideWrapper
             stageTransform={stageTransform}
             stageOpacity={stageOpacity}>
+            <View style={styles.textWrapper}>
+              <Text style={[styles.signupText, styles.SignupTextHeader]}>
+                Email
+              </Text>
+              <Text style={styles.signupText}>yeet dab yeet xoxo</Text>
+            </View>
             <Input
               label="email"
               type="email"
@@ -164,10 +179,17 @@ const Signup = props => {
                 updateFormdata(text, 'email');
               }}
             />
+            <Button text={buttonText} onPress={nextFormStage} />
           </InputSlideWrapper>
           <InputSlideWrapper
             stageTransform={stageTransform}
             stageOpacity={stageOpacity}>
+            <View style={styles.textWrapper}>
+              <Text style={[styles.signupText, styles.SignupTextHeader]}>
+                Password
+              </Text>
+              <Text style={styles.signupText}>Create a strong password</Text>
+            </View>
             <Input
               label="password"
               type="password"
@@ -186,10 +208,16 @@ const Signup = props => {
                 updateFormdata(text, 'repassword');
               }}
             />
+            <Button text={buttonText} onPress={nextFormStage} />
           </InputSlideWrapper>
           <InputSlideWrapper
             stageTransform={stageTransform}
             stageOpacity={stageOpacity}>
+            <View style={styles.textWrapper}>
+              <Text style={[styles.signupText, styles.SignupTextHeader]}>
+                Final step
+              </Text>
+            </View>
             <Input
               label="firstname"
               loadingState={loadingState}
@@ -215,9 +243,9 @@ const Signup = props => {
                 updateFormdata(text, 'phone');
               }}
             />
+            <Button text={buttonText} onPress={nextFormStage} />
           </InputSlideWrapper>
         </View>
-        <Button text={buttonText} onPress={nextFormStage} />
       </ScrollView>
     </AuthBackground>
   );
@@ -232,11 +260,22 @@ const styles = StyleSheet.create({
   },
   inputWrapperContainer: {
     alignSelf: 'stretch',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     flexDirection: 'row',
   },
   inputWrapper: {
     width: deviceWidth * 0.9,
+  },
+  SignupTextHeader: {
+    fontSize: StyleConstants.font.sizes.large,
+  },
+  signupText: {
+    color: StyleConstants.colors.white.medium,
+    fontSize: StyleConstants.font.sizes.medium,
+    fontWeight: StyleConstants.font.weight.bold,
+  },
+  textWrapper: {
+    marginBottom: StyleConstants.padding.medium,
   },
 });
 
