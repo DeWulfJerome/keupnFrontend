@@ -1,32 +1,55 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import {useDispatch} from 'react-redux';
 
+// services
+import AuthService from '../../services/AuthService';
+
+// style
 import StyleConstants, {deviceWidth} from '../../StyleConstants';
 
+// layout
+import AuthBackground from '../../views/auth/AuthBackground';
+
+// components
 import Button from '../../components/buttons/Button';
 import InputText from '../../components/inputs/InputText';
 
 //temp
 import Logo from '../../components/temp/Logo';
 
-const Login = (props) => {
+const Login = props => {
   const [loadingState, setLoadingState] = useState('');
   const [username, setUsername] = useState('myUsername');
   const [password, setPassword] = useState('testpassword');
+  const authService = new AuthService();
+
+  const dispatch = useDispatch();
 
   const toNextPage = () => {
     if (!loadingState) {
       setLoadingState('loading');
-      setTimeout(() => {
-        setLoadingState('');
-        props.navigation.navigate('signup');
-      }, 3000);
+      authService
+        .logIn(username, password, dispatch)
+        .then(() => {
+          setLoadingState('');
+        })
+        .catch(() => {
+          setLoadingState('');
+          alert('somting wong');
+        });
     }
   };
 
   return (
-    <View style={styles.pageStyle}>
-      <Logo></Logo>
+    <AuthBackground>
+      <Logo />
       <ScrollView
         contentContainerStyle={styles.scrollViewStyle}
         keyboardShouldPersistTaps="handled">
@@ -34,41 +57,57 @@ const Login = (props) => {
           label="username"
           loadingState={loadingState}
           value={username}
-          onChangeText={(text) => {
+          onChangeText={text => {
             setUsername(text);
-          }}></InputText>
+          }}
+        />
         <InputText
           label="password"
           type="password"
           loadingState={loadingState}
           value={password}
-          onChangeText={(text) => {
+          onChangeText={text => {
             setPassword(text);
-          }}></InputText>
-        <Button
-          disabled={!username}
-          text="Continue"
-          onPress={toNextPage}></Button>
+          }}
+        />
+        <Button disabled={!username} text="Continue" onPress={toNextPage} />
       </ScrollView>
-    </View>
+      <View style={styles.signupContainer}>
+        <Text style={styles.signupText}>First time? </Text>
+        <TouchableOpacity
+          style={styles.signupBtn}
+          onPress={() => {
+            props.navigation.navigate('signup');
+          }}>
+          <Text style={[styles.signupText, styles.signupBtnText]}>
+            Create your account
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </AuthBackground>
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  pageStyle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    backgroundColor: 'black',
-    paddingLeft: deviceWidth * 0.05,
-    paddingRight: deviceWidth * 0.05,
-  },
   scrollViewStyle: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: deviceWidth * 0.9,
+  },
+  signupContainer: {
+    flexDirection: 'row',
+    marginBottom: StyleConstants.padding.medium,
+  },
+  signupText: {
+    color: StyleConstants.colors.white.medium,
+    fontSize: StyleConstants.font.sizes.medium,
+    fontWeight: StyleConstants.font.weight.regular,
+  },
+  signupBtnText: {
+    fontWeight: StyleConstants.font.weight.bold,
+    color: StyleConstants.colors.blue.medium,
   },
 });
