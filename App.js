@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
+import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
@@ -20,7 +21,8 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <AppContainer></AppContainer>
+      <StatusBar backgroundColor="black" barStyle="light-content" />
+      <AppContainer />
     </Provider>
   );
 };

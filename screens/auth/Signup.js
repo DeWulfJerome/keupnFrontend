@@ -12,9 +12,11 @@ import AuthBackground from '../../views/auth/AuthBackground';
 import Input from '../../components/inputs/InputText';
 import Button from '../../components/buttons/Button';
 
+// services
+import AuthService from '../../services/AuthService';
+
 // temp
 import Logo from '../../components/temp/Logo';
-import AuthService from '../../services/AuthService';
 
 const Signup = props => {
   const authService = new AuthService();
