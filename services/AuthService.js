@@ -48,7 +48,7 @@ class AuthService {
 
   checkPasswordsMatch(password, repassword) {
     return new Promise((resolve, reject) => {
-      if (password === repassword) {
+      if (password === repassword && password) {
         resolve();
       } else {
         reject();

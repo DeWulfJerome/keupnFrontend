@@ -30,6 +30,7 @@ const Signup = props => {
   const [formStage, setFormStage] = useState(0);
   const [wrapperWidth, setWrapperWidth] = useState(0);
   const [loadingState, setLoadingState] = useState('');
+  const [buttonText, setButtonText] = useState('Continue');
   const formStageAnim = useRef(new Animated.Value(formStage)).current;
 
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ const Signup = props => {
             formData.repassword,
           );
           nextStage();
+          setButtonText('Get started');
         } catch (err) {
           setLoadingState('error');
           console.log(err);
@@ -213,7 +215,7 @@ const Signup = props => {
             />
           </InputSlideWrapper>
         </View>
-        <Button text="Next" onPress={nextFormStage} />
+        <Button text={buttonText} onPress={nextFormStage} />
       </ScrollView>
     </AuthBackground>
   );
