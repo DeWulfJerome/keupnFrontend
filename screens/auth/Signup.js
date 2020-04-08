@@ -1,5 +1,6 @@
 import React, {useState, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Animated} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 // style
 import StyleConstants, {deviceWidth} from '../../StyleConstants';
@@ -31,6 +32,8 @@ const Signup = props => {
   const [loadingState, setLoadingState] = useState('');
   const formStageAnim = useRef(new Animated.Value(formStage)).current;
 
+  const dispatch = useDispatch();
+
   const updateFormdata = (text, formProp) => {
     setFormData({...formData, [formProp]: text});
   };
@@ -43,7 +46,7 @@ const Signup = props => {
           await authService.checkUsernameUnique(formData.username);
           nextStage();
         } catch (err) {
-          setLoadingState('');
+          setLoadingState('error');
           console.log(err);
         }
         break;
@@ -52,7 +55,7 @@ const Signup = props => {
           await authService.checkEmailUnique(formData.email);
           nextStage();
         } catch (err) {
-          setLoadingState('');
+          setLoadingState('error');
           console.log(err);
         }
         break;
@@ -64,16 +67,21 @@ const Signup = props => {
           );
           nextStage();
         } catch (err) {
-          setLoadingState('');
+          setLoadingState('error');
           console.log(err);
         }
         break;
       case 3:
         try {
           await authService.createAccount(FormData);
-          props.navigation.navigate('login');
+          try {
+            authService.logIn(formData.username, formData.password, dispatch);
+          } catch (err) {
+            console.log(err);
+            props.navigation.navigate('login');
+          }
         } catch (err) {
-          setLoadingState('');
+          setLoadingState('error');
           console.log(err);
         }
         break;
