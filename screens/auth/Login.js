@@ -26,8 +26,8 @@ import Logo from '../../components/temp/Logo';
 
 const Login = props => {
   const [loadingState, setLoadingState] = useState('');
-  const [username, setUsername] = useState('myUsername');
-  const [password, setPassword] = useState('testpassword');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const authService = new AuthService();
 
   const dispatch = useDispatch();

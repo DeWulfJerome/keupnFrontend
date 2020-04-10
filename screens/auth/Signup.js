@@ -159,7 +159,11 @@ const Signup = props => {
                 updateFormdata(text, 'username');
               }}
             />
-            <Button text={buttonText} onPress={nextFormStage} />
+            <Button
+              text={buttonText}
+              onPress={nextFormStage}
+              disabled={!formData.username}
+            />
           </InputSlideWrapper>
           <InputSlideWrapper
             stageTransform={stageTransform}
@@ -179,7 +183,11 @@ const Signup = props => {
                 updateFormdata(text, 'email');
               }}
             />
-            <Button text={buttonText} onPress={nextFormStage} />
+            <Button
+              text={buttonText}
+              onPress={nextFormStage}
+              disabled={!formData.email}
+            />
           </InputSlideWrapper>
           <InputSlideWrapper
             stageTransform={stageTransform}
@@ -208,7 +216,11 @@ const Signup = props => {
                 updateFormdata(text, 'repassword');
               }}
             />
-            <Button text={buttonText} onPress={nextFormStage} />
+            <Button
+              text={buttonText}
+              onPress={nextFormStage}
+              disabled={!formData.password && !formData.repassword}
+            />
           </InputSlideWrapper>
           <InputSlideWrapper
             stageTransform={stageTransform}
@@ -243,7 +255,13 @@ const Signup = props => {
                 updateFormdata(text, 'phone');
               }}
             />
-            <Button text={buttonText} onPress={nextFormStage} />
+            <Button
+              text={buttonText}
+              onPress={nextFormStage}
+              disabled={
+                !formData.firstname || !formData.lastname || !formData.phone
+              }
+            />
           </InputSlideWrapper>
         </View>
       </ScrollView>
@@ -271,6 +289,7 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: StyleConstants.colors.white.medium,
+    opacity: 0.8,
     fontSize: StyleConstants.font.sizes.medium,
     fontWeight: StyleConstants.font.weight.bold,
   },
