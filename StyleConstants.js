@@ -23,6 +23,7 @@ const StyleConstants = {
       fontBlack: '#262626',
     },
     grey: {
+      light: '#f2f2f2',
       dark: '#666666',
     },
   },

@@ -11,6 +11,8 @@ import LoginStackContainer from './auth/LoginStackContainer';
 import BarterStackContainer from './app/BarterStackContainer';
 import ProfileStackContainer from './app/ProfileStackContainer';
 
+import TabBar from './TabBar';
+
 const Tab = createBottomTabNavigator();
 
 const AppContainer = () => {
@@ -21,7 +23,15 @@ const AppContainer = () => {
   if (loggedIn) {
     return (
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="Barter">
+        <Tab.Navigator
+          initialRouteName="Barter"
+          tabBar={({state, descriptors, navigation}) => (
+            <TabBar
+              state={state}
+              descriptors={descriptors}
+              navigation={navigation}
+            />
+          )}>
           <Tab.Screen name="Settings" component={BarterStackContainer} />
           <Tab.Screen name="Barter" component={BarterStackContainer} />
           <Tab.Screen name="Trades" component={BarterStackContainer} />
