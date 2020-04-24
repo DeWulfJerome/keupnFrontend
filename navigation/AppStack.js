@@ -1,25 +1,35 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useSelector} from 'react-redux';
 
-import AuthLoading from '../screens/auth/AuthLoading';
-import Login from '../screens/auth/Login';
+//Stacks
+import LoginStackContainer from './auth/LoginStackContainer';
+import BarterStackContainer from './app/BarterStackContainer';
 
 const AuthStack = createStackNavigator();
 
 const AppContainer = () => {
-  return (
-    <NavigationContainer>
-      <AuthStack.Navigator initialRouteName="AuthLoading">
-        <AuthStack.Screen
-          name="AuthLoading"
-          component={AuthLoading}
-          options={{title: 'Loading'}}
-        />
-        <AuthStack.Screen name="Login" component={Login}></AuthStack.Screen>
-      </AuthStack.Navigator>
-    </NavigationContainer>
-  );
+  const loggedIn = useSelector(state => {
+    return state.authReducer.auth.loggedIn;
+  });
+
+  if (loggedIn) {
+    return (
+      <NavigationContainer>
+        {/* <LoginStackContainer /> */}
+        <BarterStackContainer />
+      </NavigationContainer>
+    );
+  } else {
+    return (
+      <NavigationContainer>
+        <LoginStackContainer />
+        {/* <BarterStackContainer /> */}
+      </NavigationContainer>
+    );
+  }
 };
 
 export default AppContainer;

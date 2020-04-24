@@ -71,8 +71,7 @@ const buttonStyle = StyleSheet.create({
     borderRadius: StyleConstants.border.radius.medium,
   },
   disabledWrapper: {
-    backgroundColor: StyleConstants.colors.grey.dark,
-    opacity: 0.6,
+    backgroundColor: 'rgba(242,242,242,0.2)',
   },
   textStyle: {
     color: StyleConstants.colors.white.medium,

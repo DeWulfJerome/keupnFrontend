@@ -2,6 +2,7 @@ const authReducer = (
   state = {
     auth: {
       token: '',
+      loggedIn: false,
     },
   },
   action,
@@ -13,6 +14,15 @@ const authReducer = (
         auth: {
           ...state.auth,
           token: action.token,
+        },
+      };
+
+    case 'LOG_IN_SUCCESS':
+      return {
+        ...state,
+        auth: {
+          ...state.auth,
+          loggedIn: action.payload,
         },
       };
   }

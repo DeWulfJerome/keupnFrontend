@@ -14,6 +14,7 @@ import StyleConstants, {deviceWidth} from '../../StyleConstants';
 /**
  *
  * @param {string} loadingState An enum: can be "loading", "error", "success", or "default"
+ * @param {string} theme "light" or "dark", dark by default.
  */
 const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
   const inputType = type ? type : 'text';
@@ -22,7 +23,7 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
   const colorAnim = useRef(new Animated.Value(0)).current;
   const opacAnim = useRef(new Animated.Value(0)).current;
 
-  const onchangeInputText = text => {
+  const onchangeInputText = (text) => {
     setInputText(text);
   };
 
@@ -35,10 +36,13 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
       if (!value) {
         animateLabel(0);
       }
+      if (value) {
+        animateLabel(1);
+      }
       animateLabelOpacity(0);
       animateLabelColor(0);
     }
-  }, [focussed]);
+  }, [focussed, value]);
 
   const loadingAnim = useRef(new Animated.Value(1)).current;
 
@@ -82,7 +86,7 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
     };
   }, [loadingState]);
 
-  const determineStateMachine = state => {
+  const determineStateMachine = (state) => {
     switch (state) {
       case 'default':
         return {opacity: labelOpacAnim, backgroundColor: labelColorAnim};
@@ -109,7 +113,7 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
   };
 
   // Animations
-  const animateLabel = direction => {
+  const animateLabel = (direction) => {
     Animated.timing(labelAnim, {
       toValue: direction,
       duration: 300,
@@ -117,7 +121,7 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
     }).start();
   };
 
-  const animateLabelOpacity = val => {
+  const animateLabelOpacity = (val) => {
     Animated.timing(opacAnim, {
       toValue: val,
       duration: 300,
@@ -125,7 +129,7 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
     }).start();
   };
 
-  const animateLabelColor = direction => {
+  const animateLabelColor = (direction) => {
     Animated.timing(colorAnim, {
       toValue: direction,
       duration: 300,
@@ -149,11 +153,13 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
   const labelOpacAnim = opacAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [0.6, 1],
+    extrapolate: 'clamp',
   });
 
   const transAnim = labelAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [20, 0],
+    extrapolate: 'clamp',
   });
 
   const labelColorAnim = colorAnim.interpolate({
@@ -164,6 +170,7 @@ const InputText = ({label, value, onChangeText, type, loadingState, theme}) => {
         : StyleConstants.colors.white.medium,
       StyleConstants.colors.blue.medium,
     ],
+    extrapolate: 'clamp',
   });
 
   return (
