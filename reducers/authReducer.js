@@ -2,7 +2,7 @@ const authReducer = (
   state = {
     auth: {
       token: '',
-      loggedIn: false,
+      loggedIn: true,
     },
   },
   action,

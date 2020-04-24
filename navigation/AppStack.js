@@ -1,14 +1,17 @@
 import * as React from 'react';
 import {useEffect} from 'react';
+import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
 
 //Stacks
 import LoginStackContainer from './auth/LoginStackContainer';
 import BarterStackContainer from './app/BarterStackContainer';
+import ProfileStackContainer from './app/ProfileStackContainer';
 
-const AuthStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const AppContainer = () => {
   const loggedIn = useSelector(state => {
@@ -18,15 +21,18 @@ const AppContainer = () => {
   if (loggedIn) {
     return (
       <NavigationContainer>
-        {/* <LoginStackContainer /> */}
-        <BarterStackContainer />
+        <Tab.Navigator initialRouteName="Barter">
+          <Tab.Screen name="Settings" component={BarterStackContainer} />
+          <Tab.Screen name="Barter" component={BarterStackContainer} />
+          <Tab.Screen name="Trades" component={BarterStackContainer} />
+          <Tab.Screen name="Profile" component={ProfileStackContainer} />
+        </Tab.Navigator>
       </NavigationContainer>
     );
   } else {
     return (
       <NavigationContainer>
         <LoginStackContainer />
-        {/* <BarterStackContainer /> */}
       </NavigationContainer>
     );
   }
