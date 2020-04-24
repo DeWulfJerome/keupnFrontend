@@ -219,7 +219,7 @@ const Signup = props => {
             <Button
               text={buttonText}
               onPress={nextFormStage}
-              disabled={!formData.password && !formData.repassword}
+              disabled={!formData.password || !formData.repassword}
             />
           </InputSlideWrapper>
           <InputSlideWrapper
