@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useRef} from 'react';
+import React, {useState, useLayoutEffect, useRef, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,7 +12,7 @@ import StyleConstants from '../StyleConstants';
 const dotSize = 10;
 
 const TabBar = ({state, descriptors, navigation}) => {
-  const [outerViewWidth, setOuterViewWidth] = useState(300);
+  const [outerViewWidth, setOuterViewWidth] = useState(0);
   const [activeTab, setActiveTab] = useState(undefined);
   const [tabCoords, setTabCoords] = useState({
     one: {left: 0, right: 0},
@@ -22,31 +22,45 @@ const TabBar = ({state, descriptors, navigation}) => {
   });
   const dotAnimLeft = useRef(new Animated.Value(0)).current;
   const dotAnimRight = useRef(new Animated.Value(0)).current;
+  const dotOpacity = useRef(new Animated.Value(0)).current;
 
   useLayoutEffect(() => {
-    const interval = outerViewWidth / 4;
-    const firstDot = interval / 2 - dotSize / 2;
-    dotAnimRight.setValue(state.index);
-    dotAnimLeft.setValue(state.index);
+    if (outerViewWidth) {
+      console.log('outerViewWidth changed: ', outerViewWidth);
+      const interval = outerViewWidth / 4;
+      const firstDotLeft = interval / 2 - dotSize / 2;
 
-    setTabCoords({
-      one: {left: firstDot, right: outerViewWidth - (firstDot + dotSize)},
-      two: {
-        left: firstDot + interval,
-        right: outerViewWidth - (firstDot + dotSize + interval),
-      },
-      three: {
-        left: firstDot + interval * 2,
-        right: outerViewWidth - (firstDot + dotSize + interval * 2),
-      },
-      four: {
-        left: firstDot + interval * 3,
-        right: outerViewWidth - (firstDot + dotSize + interval * 3),
-      },
-    });
-    setActiveTab(state.index);
-    // console.log(leftAnim, rightAnim);
-  }, []);
+      setTabCoords({
+        one: {
+          left: firstDotLeft,
+          right: outerViewWidth - (firstDotLeft + dotSize),
+        },
+        two: {
+          left: firstDotLeft + interval,
+          right: outerViewWidth - (firstDotLeft + dotSize + interval),
+        },
+        three: {
+          left: firstDotLeft + interval * 2,
+          right: outerViewWidth - (firstDotLeft + dotSize + interval * 2),
+        },
+        four: {
+          left: firstDotLeft + interval * 3,
+          right: outerViewWidth - (firstDotLeft + dotSize + interval * 3),
+        },
+      });
+
+      setActiveTab(state.index);
+    }
+  }, [outerViewWidth]);
+
+  useEffect(() => {
+    if (tabCoords.two.left) {
+      console.log('tabCoords changed');
+      dotAnimRight.setValue(state.index);
+      dotAnimLeft.setValue(state.index);
+      animateDotOpacity(1);
+    }
+  }, [tabCoords]);
 
   const onTabPress = (route, index) => {
     animateTabDot(index);
@@ -85,44 +99,54 @@ const TabBar = ({state, descriptors, navigation}) => {
     });
   };
 
+  const animateDotOpacity = val => {
+    Animated.timing(dotOpacity, {
+      toValue: val,
+      duration: 200,
+      easing: Easing.ease,
+    }).start();
+  };
   const animateTabDot = index => {
+    const animateLeft = Animated.sequence([
+      Animated.timing(dotAnimLeft, {
+        toValue: index,
+        duration: 300,
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }),
+      Animated.timing(dotAnimRight, {
+        toValue: index,
+        duration: 200,
+
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }),
+    ]);
+
+    const animateRight = Animated.sequence([
+      Animated.timing(dotAnimRight, {
+        toValue: index,
+        duration: 300,
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }),
+      Animated.timing(dotAnimLeft, {
+        toValue: index,
+        duration: 200,
+
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }),
+    ]);
     if (index === activeTab) {
       return;
     }
+    animateLeft.stop();
+    animateRight.stop();
     if (index > activeTab) {
-      //Animate right
-      Animated.sequence([
-        Animated.timing(dotAnimRight, {
-          toValue: index,
-          duration: 300,
-          easing: Easing.ease,
-          useNativeDriver: false,
-        }),
-        Animated.timing(dotAnimLeft, {
-          toValue: index,
-          duration: 200,
-
-          easing: Easing.ease,
-          useNativeDriver: false,
-        }),
-      ]).start();
+      animateRight.start();
     } else {
-      // Animate left
-      Animated.sequence([
-        Animated.timing(dotAnimLeft, {
-          toValue: index,
-          duration: 300,
-          easing: Easing.ease,
-          useNativeDriver: false,
-        }),
-        Animated.timing(dotAnimRight, {
-          toValue: index,
-          duration: 200,
-
-          easing: Easing.ease,
-          useNativeDriver: false,
-        }),
-      ]).start();
+      animateLeft.start();
     }
     setActiveTab(index);
   };
@@ -156,7 +180,10 @@ const TabBar = ({state, descriptors, navigation}) => {
       }}>
       {renderTabs()}
       <Animated.View
-        style={[styles.navDot, {left: leftAnim, right: rightAnim}]}
+        style={[
+          styles.navDot,
+          {left: leftAnim, right: rightAnim, opacity: dotOpacity},
+        ]}
       />
     </View>
   );
@@ -170,7 +197,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'space-between',
     position: 'relative',
-    paddingBottom: 20,
   },
   tempTabView: {
     backgroundColor: StyleConstants.colors.grey.light,
@@ -186,8 +212,9 @@ const styles = StyleSheet.create({
   navDot: {
     backgroundColor: StyleConstants.colors.blue.medium,
     height: dotSize,
-    borderRadius: 10,
+    borderRadius: dotSize,
     position: 'absolute',
-    bottom: 10,
+    bottom: StyleConstants.padding.medium + dotSize,
+    elevation: 5,
   },
 });
