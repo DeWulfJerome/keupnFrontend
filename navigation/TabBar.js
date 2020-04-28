@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
+  Image,
 } from 'react-native';
 import StyleConstants from '../StyleConstants';
 
-const dotSize = 10;
+const dotSize = 5;
 
 const TabBar = ({state, descriptors, navigation}) => {
   const [outerViewWidth, setOuterViewWidth] = useState(0);
@@ -55,7 +56,6 @@ const TabBar = ({state, descriptors, navigation}) => {
 
   useEffect(() => {
     if (tabCoords.two.left) {
-      console.log('tabCoords changed');
       dotAnimRight.setValue(state.index);
       dotAnimLeft.setValue(state.index);
       animateDotOpacity(1);
@@ -84,6 +84,21 @@ const TabBar = ({state, descriptors, navigation}) => {
 
   const renderTabs = () => {
     return state.routes.map((route, index) => {
+      let icon;
+      switch (route.name) {
+        case 'Barter':
+          icon = require('../assets/icons/Barter.png');
+          break;
+        case 'Settings':
+          icon = require('../assets/icons/Settings.png');
+          break;
+        case 'Profile':
+          icon = require('../assets/icons/Profile.png');
+          break;
+        case 'Trades':
+          icon = require('../assets/icons/Trades.png');
+          break;
+      }
       return (
         <TouchableOpacity
           style={styles.tabWrapper}
@@ -93,7 +108,17 @@ const TabBar = ({state, descriptors, navigation}) => {
           onLongPress={() => {
             onTabLongPress(route);
           }}>
-          <View style={styles.tempTabView} />
+          {route.name === 'Barter' ? (
+            <Image
+              source={icon}
+              style={[
+                styles.iconStyle,
+                route.name === 'Barter' && {left: 4, top: 1},
+              ]}
+            />
+          ) : (
+            <View style={styles.tempIcon} />
+          )}
         </TouchableOpacity>
       );
     });
@@ -104,6 +129,7 @@ const TabBar = ({state, descriptors, navigation}) => {
       toValue: val,
       duration: 200,
       easing: Easing.ease,
+      useNativeDriver: false,
     }).start();
   };
   const animateTabDot = index => {
@@ -194,15 +220,18 @@ export default TabBar;
 const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: StyleConstants.colors.blue.dark,
     justifyContent: 'space-between',
     position: 'relative',
   },
-  tempTabView: {
-    backgroundColor: StyleConstants.colors.grey.light,
+  iconStyle: {
     height: 30,
     width: 30,
-    borderRadius: 30,
+  },
+  tempIcon: {
+    height: 30,
+    width: 30,
+    backgroundColor: StyleConstants.colors.grey.light,
   },
   tabWrapper: {
     padding: StyleConstants.padding.medium,
@@ -214,7 +243,7 @@ const styles = StyleSheet.create({
     height: dotSize,
     borderRadius: dotSize,
     position: 'absolute',
-    bottom: StyleConstants.padding.medium + dotSize,
-    elevation: 5,
+    bottom: StyleConstants.padding.medium + 12.5,
+    elevation: 2,
   },
 });

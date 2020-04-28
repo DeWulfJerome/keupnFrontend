@@ -8,7 +8,7 @@ const StyleConstants = {
     blue: {
       light: '#651dff',
       medium: '#651dff',
-      dark: '#651dff',
+      dark: '#060013',
     },
     red: {
       medium: '#cc0000',

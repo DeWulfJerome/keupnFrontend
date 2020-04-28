@@ -20,9 +20,7 @@ import AuthBackground from '../../views/auth/AuthBackground';
 // components
 import Button from '../../components/buttons/Button';
 import InputText from '../../components/inputs/InputText';
-
-//temp
-import Logo from '../../components/temp/Logo';
+import Logo from '../../components/assets/Logo';
 
 const Login = props => {
   const [loadingState, setLoadingState] = useState('');
