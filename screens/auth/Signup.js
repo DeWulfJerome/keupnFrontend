@@ -11,12 +11,10 @@ import AuthBackground from '../../views/auth/AuthBackground';
 // components
 import Input from '../../components/inputs/InputText';
 import Button from '../../components/buttons/Button';
+import Logo from '../../components/assets/Logo';
 
 // services
 import AuthService from '../../services/AuthService';
-
-// temp
-import Logo from '../../components/temp/Logo';
 
 const Signup = props => {
   const authService = new AuthService();

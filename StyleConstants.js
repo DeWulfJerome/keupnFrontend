@@ -8,7 +8,7 @@ const StyleConstants = {
     blue: {
       light: '#651dff',
       medium: '#651dff',
-      dark: '#651dff',
+      dark: '#060013',
     },
     red: {
       medium: '#cc0000',
@@ -23,6 +23,7 @@ const StyleConstants = {
       fontBlack: '#262626',
     },
     grey: {
+      light: '#f2f2f2',
       dark: '#666666',
     },
   },
@@ -48,6 +49,7 @@ const StyleConstants = {
     radius: {
       small: 5,
       medium: 10,
+      regular: 20,
       large: 30,
     },
   },
