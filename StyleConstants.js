@@ -49,6 +49,7 @@ const StyleConstants = {
     radius: {
       small: 5,
       medium: 10,
+      regular: 20,
       large: 30,
     },
   },

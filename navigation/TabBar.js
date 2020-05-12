@@ -8,7 +8,7 @@ import {
   Easing,
   Image,
 } from 'react-native';
-import StyleConstants from '../StyleConstants';
+import StyleConstants, {deviceWidth, deviceHeight} from '../StyleConstants';
 
 const dotSize = 5;
 
@@ -223,6 +223,11 @@ const styles = StyleSheet.create({
     backgroundColor: StyleConstants.colors.blue.dark,
     justifyContent: 'space-between',
     position: 'relative',
+    width: deviceWidth * 0.9,
+    position: 'absolute',
+    bottom: deviceWidth * 0.05,
+    left: deviceWidth * 0.05,
+    borderRadius: StyleConstants.border.radius.regular,
   },
   iconStyle: {
     height: 30,
