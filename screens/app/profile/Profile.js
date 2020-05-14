@@ -2,10 +2,10 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import PageLayout from '../../../components/layout/PageLayout';
 
-const Barter = () => {
+const Profile = () => {
   return (
     <PageLayout
-      title="Barter"
+      title="Profile"
       subTitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod">
       <View style={{alignItems: 'center'}}>
         <View style={styles.block} />
@@ -28,7 +28,7 @@ const Barter = () => {
   );
 };
 
-export default Barter;
+export default Profile;
 
 const styles = StyleSheet.create({
   block: {

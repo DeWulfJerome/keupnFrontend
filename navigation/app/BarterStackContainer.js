@@ -7,7 +7,11 @@ const BarterStack = createStackNavigator();
 
 const BarterStackContainer = () => (
   <BarterStack.Navigator initialRouteName="barter">
-    <BarterStack.Screen name="Barter" component={Barter} />
+    <BarterStack.Screen
+      name="Barter"
+      component={Barter}
+      options={{headerShown: false}}
+    />
   </BarterStack.Navigator>
 );
 

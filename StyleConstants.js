@@ -6,6 +6,7 @@ export const deviceHeight = Dimensions.get('window').height;
 const StyleConstants = {
   colors: {
     blue: {
+      pale: '#F2F4F9',
       light: '#651dff',
       medium: '#651dff',
       dark: '#060013',
@@ -41,9 +42,11 @@ const StyleConstants = {
     },
   },
   padding: {
+    small: 7,
     medium: 15,
     large: 30,
     ultra: 60,
+    navAvoider: 120,
   },
   border: {
     radius: {
@@ -51,6 +54,7 @@ const StyleConstants = {
       medium: 10,
       regular: 20,
       large: 30,
+      huge: 30,
     },
   },
   width: {
