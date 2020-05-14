@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import PageLayout from '../../../components/layout/PageLayout';
+import StyleConstants from '../../../StyleConstants';
 
 const Profile = () => {
   return (
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   block: {
     height: 50,
     width: 50,
-    backgroundColor: 'green',
+    backgroundColor: StyleConstants.colors.blue.medium,
     marginBottom: 10,
   },
   blockOrange: {

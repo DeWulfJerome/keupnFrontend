@@ -1,9 +1,17 @@
 import React, {useRef, useState} from 'react';
-import {StyleSheet, Text, View, Image, Animated} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Animated,
+  ScrollView,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import StyleConstants, {deviceWidth, deviceHeight} from '../../StyleConstants';
-import {ScrollView} from 'react-native-gesture-handler';
+// import {ScrollView} from 'react-native-gesture-handler';
 
-const [minHeaderHeight, maxHeaderHeight] = [80, 150];
+const [minHeaderHeight, maxHeaderHeight] = [80, 155];
 const maxScrollOffset = 75;
 
 const PageLayout = ({children, title, subTitle}) => {
@@ -16,10 +24,15 @@ const PageLayout = ({children, title, subTitle}) => {
     outputRange: [maxHeaderHeight, minHeaderHeight],
     extrapolate: 'clamp',
   });
+  const animatedHeaderHeightSmall = scrollAnim.interpolate({
+    inputRange: [0, maxScrollOffset],
+    outputRange: [maxHeaderHeight - 8, minHeaderHeight - 12],
+    extrapolate: 'clamp',
+  });
 
   const animatedScrollViewTop = scrollAnim.interpolate({
     inputRange: [0, maxScrollOffset],
-    outputRange: [150, 20],
+    outputRange: [170, 20],
     extrapolate: 'clamp',
   });
 
@@ -47,33 +60,41 @@ const PageLayout = ({children, title, subTitle}) => {
     extrapolate: 'clamp',
   });
 
+  const animatedOverlayOpacity = scrollAnim.interpolate({
+    inputRange: [0, maxScrollOffset],
+    outputRange: [0.4, 0.1],
+    extrapolate: 'clamp',
+  });
+
+  const animatedImageScale = scrollAnim.interpolate({
+    inputRange: [0, maxScrollOffset],
+    outputRange: [1, 1.3],
+    extrapolate: 'clamp',
+  });
+
   return (
     <View style={styles.pageContainer}>
-      <ScrollView
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollAnim}}}],
-          {useNativeDrive: false},
-        )}
-        contentContainerStyle={{}}
-        style={{backgroundColor: StyleConstants.colors.blue.pale}}
-        scrollEventThrottle={16}>
-        <Animated.View
-          style={[
-            styles.pageContentContainer,
-            {
-              marginTop: animatedScrollViewTop,
-            },
-          ]}>
-          {children}
-        </Animated.View>
-      </ScrollView>
-
+      {/* Header */}
       <Animated.View
         style={[styles.pageHeaderContainer, {height: animatedHeaderHeight}]}>
-        <Image
+        <Animated.Image
           source={require('../../assets/backgrounds/pageHeaderBackground.jpg')}
-          style={styles.headerImage}
-          resizeMode="stretch"
+          style={[
+            styles.headerImage,
+            {
+              transform: [{scale: animatedImageScale}],
+              height: animatedHeaderHeightSmall,
+            },
+          ]}
+        />
+        <Animated.View
+          style={[
+            styles.headerImageOverlay,
+            {
+              opacity: animatedOverlayOpacity,
+              height: animatedHeaderHeightSmall,
+            },
+          ]}
         />
         <View
           style={styles.titleContainer}
@@ -105,7 +126,31 @@ const PageLayout = ({children, title, subTitle}) => {
           </Animated.Text>
         </View>
         <View style={styles.fakeBorders} />
+        <LinearGradient
+          colors={['rgba(242, 244, 249, .8)', 'rgba(242, 244, 249, 0)']}
+          style={styles.contentFadeOverlay}
+        />
       </Animated.View>
+
+      {/* Content */}
+      <ScrollView
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollAnim}}}],
+          {useNativeDrive: false},
+        )}
+        contentContainerStyle={{}}
+        style={{backgroundColor: StyleConstants.colors.blue.pale}}
+        scrollEventThrottle={16}>
+        <Animated.View
+          style={[
+            styles.pageContentContainer,
+            {
+              marginTop: animatedScrollViewTop,
+            },
+          ]}>
+          {children}
+        </Animated.View>
+      </ScrollView>
     </View>
   );
 };
@@ -121,7 +166,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 10,
@@ -133,8 +178,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    width: '100%',
+  },
+  headerImageOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     height: 150,
     width: '100%',
+    backgroundColor: '#000',
   },
   titleContainer: {
     width: deviceWidth * 0.9,
@@ -153,7 +207,9 @@ const styles = StyleSheet.create({
   pageContentContainer: {
     backgroundColor: StyleConstants.colors.blue.pale,
     paddingBottom: StyleConstants.padding.navAvoider,
+    position: 'relative',
   },
+
   fakeBorders: {
     backgroundColor: StyleConstants.colors.blue.pale,
     position: 'absolute',
@@ -163,5 +219,13 @@ const styles = StyleSheet.create({
     height: StyleConstants.border.radius.large,
     borderTopLeftRadius: StyleConstants.border.radius.large,
     borderTopRightRadius: StyleConstants.border.radius.large,
+  },
+  contentFadeOverlay: {
+    position: 'absolute',
+    bottom: -20,
+    left: 0,
+    right: 0,
+    height: 20,
+    zIndex: 10,
   },
 });
