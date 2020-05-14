@@ -54,6 +54,7 @@ const StyleConstants = {
       medium: 10,
       regular: 20,
       large: 30,
+      huge: 30,
     },
   },
   width: {
