@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import StyleConstants, {deviceWidth, deviceHeight} from '../../StyleConstants';
-// import {ScrollView} from 'react-native-gesture-handler';
 
 const [minHeaderHeight, maxHeaderHeight] = [80, 155];
 const maxScrollOffset = 75;
@@ -62,7 +61,7 @@ const PageLayout = ({children, title, subTitle}) => {
 
   const animatedOverlayOpacity = scrollAnim.interpolate({
     inputRange: [0, maxScrollOffset],
-    outputRange: [0.4, 0.1],
+    outputRange: [0, 0.4],
     extrapolate: 'clamp',
   });
 
